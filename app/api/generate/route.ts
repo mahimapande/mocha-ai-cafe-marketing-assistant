@@ -1,15 +1,16 @@
 import { generateText } from "ai"
 
 export async function POST(req: Request) {
-  const { specials, tone, includeEmojis, channel } = await req.json()
+  try {
+    const { specials, tone, includeEmojis, channel } = await req.json()
 
-  const results: { captions?: string[]; email?: string } = {}
+    const results: { captions?: string[]; email?: string } = {}
 
-  // ─── Instagram Captions ────────────────────────────────────────────
-  if (channel === "instagram" || channel === "both") {
-    const { text: captionsRaw } = await generateText({
-      model: "openai/gpt-4o-mini",
-      // ✏️ Customize the Instagram prompt below
+    // ─── Instagram Captions ────────────────────────────────────────────
+    if (channel === "instagram" || channel === "both") {
+      const { text: captionsRaw } = await generateText({
+        model: "openai/gpt-5-mini",
+      // Customize the Instagram prompt below
       prompt: `You are a social-media copywriter for a cozy neighborhood café.
 
 Generate exactly 3 short Instagram caption options based on these specials/events:
@@ -35,8 +36,8 @@ Rules:
   // ─── Email Draft ───────────────────────────────────────────────────
   if (channel === "email" || channel === "both") {
     const { text: email } = await generateText({
-      model: "openai/gpt-4o-mini",
-      // ✏️ Customize the Email prompt below
+      model: "openai/gpt-5-mini",
+      // Customize the Email prompt below
       prompt: `You are a friendly copywriter for a cozy neighborhood café.
 
 Write a short weekly promo email based on these specials/events:
@@ -58,5 +59,12 @@ Rules:
     results.email = email.trim()
   }
 
-  return Response.json(results)
+    return Response.json(results)
+  } catch (error) {
+    console.error("[v0] Generate API error:", error)
+    return Response.json(
+      { error: error instanceof Error ? error.message : "Failed to generate content" },
+      { status: 500 }
+    )
+  }
 }

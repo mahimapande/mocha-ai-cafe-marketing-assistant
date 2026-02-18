@@ -31,11 +31,12 @@ export default function Home() {
         body: JSON.stringify(data),
       })
 
+      const json = await res.json()
+
       if (!res.ok) {
-        throw new Error("Failed to generate content. Please try again.")
+        throw new Error(json.error || "Failed to generate content. Please try again.")
       }
 
-      const json = await res.json()
       setResults(json)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.")
