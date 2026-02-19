@@ -25,13 +25,16 @@ export default function Home() {
     setError(null)
 
     try {
+      console.log("[v0] handleGenerate called with:", data)
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
 
+      console.log("[v0] Response status:", res.status)
       const json = await res.json()
+      console.log("[v0] Response body:", json)
 
       if (!res.ok) {
         throw new Error(
@@ -41,6 +44,7 @@ export default function Home() {
 
       setResults(json)
     } catch (err) {
+      console.error("[v0] Error caught:", err)
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
       setIsLoading(false)
