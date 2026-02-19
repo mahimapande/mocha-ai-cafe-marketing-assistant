@@ -2,11 +2,16 @@ import { generateText } from "ai"
 
 export async function POST(req: Request) {
   try {
-    const { specials, tone, includeEmojis, channel } = await req.json()
+    const body = await req.json()
+    console.log("[v0] API /generate received body:", JSON.stringify(body))
+    const { specials, tone, includeEmojis, channel } = body
 
     const results: { captions?: string[]; email?: string } = {}
 
+    console.log("[v0] Generating for channel:", channel)
+
     if (channel === "instagram" || channel === "both") {
+      console.log("[v0] Starting Instagram generation...")
       const { text: captionsRaw } = await generateText({
         model: "openai/gpt-5-mini",
         prompt: `You are a social-media copywriter for a cozy neighborhood café.
@@ -25,13 +30,16 @@ Rules:
         maxOutputTokens: 600,
       })
 
+      console.log("[v0] Instagram raw response:", captionsRaw)
       results.captions = captionsRaw
         .split("---")
         .map((c) => c.trim())
         .filter(Boolean)
+      console.log("[v0] Parsed captions:", results.captions)
     }
 
     if (channel === "email" || channel === "both") {
+      console.log("[v0] Starting email generation...")
       const { text: email } = await generateText({
         model: "openai/gpt-5-mini",
         prompt: `You are a friendly copywriter for a cozy neighborhood café.
@@ -55,6 +63,7 @@ Rules:
       results.email = email.trim()
     }
 
+    console.log("[v0] Returning results:", JSON.stringify(results))
     return Response.json(results)
   } catch (error) {
     console.error("[v0] Generate API error:", error)
