@@ -27,6 +27,9 @@ export function PromoForm({ onGenerate, isLoading }: PromoFormProps) {
     onGenerate({ specials, tone, includeEmojis, channel })
   }
 
+  const selectClasses =
+    "w-full h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30 cursor-pointer"
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
@@ -53,7 +56,7 @@ export function PromoForm({ onGenerate, isLoading }: PromoFormProps) {
             id="tone"
             value={tone}
             onChange={(e) => setTone(e.target.value)}
-            className="w-full h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30 cursor-pointer appearance-none"
+            className={selectClasses}
           >
             <option value="cozy">Cozy</option>
             <option value="playful">Playful</option>
@@ -69,7 +72,7 @@ export function PromoForm({ onGenerate, isLoading }: PromoFormProps) {
             id="channel"
             value={channel}
             onChange={(e) => setChannel(e.target.value)}
-            className="w-full h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30 cursor-pointer appearance-none"
+            className={selectClasses}
           >
             <option value="instagram">Instagram</option>
             <option value="email">Email</option>
