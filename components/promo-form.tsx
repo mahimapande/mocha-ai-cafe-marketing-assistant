@@ -4,13 +4,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Loader2 } from "lucide-react"
 
 interface PromoFormProps {
@@ -57,32 +50,32 @@ export function PromoForm({ onGenerate, isLoading }: PromoFormProps) {
           <Label htmlFor="tone" className="text-sm font-medium text-foreground">
             Tone
           </Label>
-          <Select value={tone} onValueChange={setTone}>
-            <SelectTrigger id="tone" className="w-full bg-card">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="cozy">Cozy</SelectItem>
-              <SelectItem value="playful">Playful</SelectItem>
-              <SelectItem value="professional">Professional</SelectItem>
-            </SelectContent>
-          </Select>
+          <select
+            id="tone"
+            value={tone}
+            onChange={(e) => setTone(e.target.value)}
+            className="w-full h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30 cursor-pointer appearance-none"
+          >
+            <option value="cozy">Cozy</option>
+            <option value="playful">Playful</option>
+            <option value="professional">Professional</option>
+          </select>
         </div>
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="channel" className="text-sm font-medium text-foreground">
             Channel
           </Label>
-          <Select value={channel} onValueChange={setChannel}>
-            <SelectTrigger id="channel" className="w-full bg-card">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="instagram">Instagram</SelectItem>
-              <SelectItem value="email">Email</SelectItem>
-              <SelectItem value="both">Both</SelectItem>
-            </SelectContent>
-          </Select>
+          <select
+            id="channel"
+            value={channel}
+            onChange={(e) => setChannel(e.target.value)}
+            className="w-full h-10 rounded-lg border border-input bg-card px-3 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30 cursor-pointer appearance-none"
+          >
+            <option value="instagram">Instagram</option>
+            <option value="email">Email</option>
+            <option value="both">Both</option>
+          </select>
         </div>
       </div>
 
