@@ -34,7 +34,9 @@ export default function Home() {
       const json = await res.json()
 
       if (!res.ok) {
-        throw new Error(json.error || "Failed to generate content. Please try again.")
+        throw new Error(
+          json.error || "Failed to generate content. Please try again."
+        )
       }
 
       setResults(json)
@@ -65,20 +67,19 @@ export default function Home() {
 
       <main className="mx-auto max-w-6xl px-6 py-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
-          {/* Form Panel */}
           <div className="lg:col-span-2">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
               <h2 className="font-serif text-lg font-semibold text-foreground mb-1">
                 {"What's happening this week?"}
               </h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Tell us about your specials, events, or anything you want to promote.
+                Tell us about your specials, events, or anything you want to
+                promote.
               </p>
               <PromoForm onGenerate={handleGenerate} isLoading={isLoading} />
             </div>
           </div>
 
-          {/* Results Panel */}
           <div className="lg:col-span-3">
             <div className="rounded-xl border border-border bg-card/50 p-6 min-h-[400px]">
               {error && (
