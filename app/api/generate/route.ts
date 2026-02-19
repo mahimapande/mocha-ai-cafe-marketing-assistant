@@ -27,7 +27,7 @@ Rules:
 - Separate each caption with "---" on its own line.
 - Do NOT number the captions or add any other formatting.`,
         temperature: 0.8,
-        maxOutputTokens: 600,
+        maxOutputTokens: 2048,
       })
 
       console.log("[v0] Instagram raw response:", captionsRaw)
@@ -57,7 +57,7 @@ Rules:
 - Keep the entire email under 200 words.
 - Do NOT include a subject line - just the body text.`,
         temperature: 0.7,
-        maxOutputTokens: 500,
+        maxOutputTokens: 2048,
       })
 
       results.email = email.trim()
