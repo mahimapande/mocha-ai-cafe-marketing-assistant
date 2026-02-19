@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Loader2 } from "lucide-react"
 
 interface PromoFormProps {
@@ -80,10 +79,12 @@ export function PromoForm({ onGenerate, isLoading }: PromoFormProps) {
       </div>
 
       <div className="flex items-center gap-3">
-        <Checkbox
+        <input
+          type="checkbox"
           id="emojis"
           checked={includeEmojis}
-          onCheckedChange={(checked) => setIncludeEmojis(checked === true)}
+          onChange={(e) => setIncludeEmojis(e.target.checked)}
+          className="size-4 rounded border border-input accent-primary cursor-pointer"
         />
         <Label htmlFor="emojis" className="text-sm text-foreground cursor-pointer">
           Include emojis
