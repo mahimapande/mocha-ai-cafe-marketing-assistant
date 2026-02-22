@@ -9,15 +9,21 @@ export async function POST(req: Request) {
     if (channel === "instagram" || channel === "both") {
       const { text: captionsRaw } = await generateText({
         model: "openai/gpt-5-mini",
-        prompt: `You are a social-media copywriter for a cozy neighborhood cafe.
+        prompt: `You are a social-media copywriter for a neighborhood cafe.
 
-Generate exactly 3 Instagram caption options based on these specials/events:
+Generate exactly 3 Instagram caption options based ONLY on these specials/events:
 "${specials}"
 
+Tone guide (use "${tone}"):
+- cozy = warm, inviting, friendly
+- playful = fun, light, slightly cheeky
+- professional = clear, informative, straightforward
+
 Rules:
-- Tone: ${tone}
 - ${includeEmojis ? "Include relevant emojis." : "Do NOT include any emojis."}
 - Each caption must be 1-2 sentences max. Keep it conversational, not salesy.
+- Do NOT use flowery or exaggerated adjectives like "flaky," "succulent," "decadent," "heavenly," "irresistible," or similar over-the-top terms. Use plain, natural language.
+- Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
 - End each caption with exactly 3-4 hashtags. Avoid generic tags like #coffee or #cafe. Prefer specific, local-feeling tags (e.g. #MorningRitual, #TuesdayTreat, #NeighborhoodGem, #SlowMorning).
 - Separate each caption with "---" on its own line.
 - Do NOT number the captions or add any other formatting.`,
@@ -34,14 +40,20 @@ Rules:
     if (channel === "email" || channel === "both") {
       const { text: email } = await generateText({
         model: "openai/gpt-5-mini",
-        prompt: `You are a friendly copywriter for a cozy neighborhood café.
+        prompt: `You are a copywriter for a neighborhood cafe.
 
-Write a short weekly promo email based on these specials/events:
+Write a short weekly promo email based ONLY on these specials/events:
 "${specials}"
 
+Tone guide (use "${tone}"):
+- cozy = warm, inviting, friendly
+- playful = fun, light, slightly cheeky
+- professional = clear, informative, straightforward
+
 Rules:
-- Tone: ${tone}
 - ${includeEmojis ? "Include a few relevant emojis." : "Do NOT include any emojis."}
+- Do NOT use flowery or exaggerated adjectives like "flaky," "succulent," "decadent," "heavenly," "irresistible," or similar over-the-top terms. Use plain, natural language.
+- Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
 - Start with a warm greeting to regulars.
 - Summarize the specials/events in 1-2 sentences.
 - Include a bullet list of the specials (use bullet characters for bullets).
