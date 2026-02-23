@@ -64,9 +64,14 @@ export function PromoResults({ captions, email }: PromoResultsProps) {
                 className="rounded-lg border border-border bg-card p-4"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-sm text-foreground leading-relaxed flex-1 whitespace-pre-wrap">
-                    {caption}
-                  </p>
+                  <div className="flex items-start gap-3 flex-1">
+                    <span className="flex-none size-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-medium">
+                      {i + 1}
+                    </span>
+                    <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
+                      {caption}
+                    </p>
+                  </div>
                   <CopyButton text={caption} />
                 </div>
               </div>

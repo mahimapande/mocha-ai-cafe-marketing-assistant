@@ -33,8 +33,8 @@ Rules:
       })
 
       results.captions = captionsRaw
-        .split(/\n\s*\d+\.\s+/)
-        .map((c) => c.trim())
+        .split(/(?:\n\s*---\s*\n|\n\s*\d+\.\s+)/)
+        .map((c) => c.replace(/^\d+\.\s*/, "").trim())
         .filter(Boolean)
     }
 
