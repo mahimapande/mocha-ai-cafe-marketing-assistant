@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         model: "openai/gpt-5-mini",
         prompt: `You are a social-media copywriter for a neighborhood cafe.
 
-Generate exactly 3 Instagram caption options based ONLY on these specials/events:
+Write 3 short, catchy Instagram captions based ONLY on these specials/events:
 "${specials}"
 
 Tone guide (use "${tone}"):
@@ -21,18 +21,19 @@ Tone guide (use "${tone}"):
 
 Rules:
 - ${includeEmojis ? "Include relevant emojis." : "Do NOT include any emojis."}
-- Each caption must be 1-2 sentences max. Keep it conversational, not salesy.
+- Each caption must stay under 150 characters so it reads quickly.
+- Write in clear, natural, grammatically correct American English with proper punctuation.
 - Do NOT use flowery or exaggerated adjectives like "flaky," "succulent," "decadent," "heavenly," "irresistible," or similar over-the-top terms. Use plain, natural language.
 - Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
-- End each caption with exactly 3-4 hashtags. Avoid generic tags like #coffee or #cafe. Prefer specific, local-feeling tags (e.g. #MorningRitual, #TuesdayTreat, #NeighborhoodGem, #SlowMorning).
-- Separate each caption with "---" on its own line.
-- Do NOT number the captions or add any other formatting.`,
+- End each caption with 2-3 relevant hashtags that feel local and cozy (e.g. #neighborhoodcafe, #slowmorning, #coffeelover, #matchalatte).
+- Number the captions 1., 2., and 3.
+- Before returning, silently proofread and fix any grammar, spelling, or punctuation errors.`,
         temperature: 0.8,
         maxOutputTokens: 2048,
       })
 
       results.captions = captionsRaw
-        .split("---")
+        .split(/\n\s*\d+\.\s+/)
         .map((c) => c.trim())
         .filter(Boolean)
     }
@@ -51,7 +52,8 @@ Tone guide (use "${tone}"):
 - professional = clear, informative, straightforward
 
 Rules:
-- ${includeEmojis ? "Include a few relevant emojis." : "Do NOT include any emojis."}
+- ${includeEmojis ? "Use emojis sparingly -- only 1-2 in the entire email where they feel natural." : "Do NOT include any emojis."}
+- Write in clear, natural, grammatically correct American English with proper punctuation and sentence structure.
 - Do NOT use flowery or exaggerated adjectives like "flaky," "succulent," "decadent," "heavenly," "irresistible," or similar over-the-top terms. Use plain, natural language.
 - Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
 - Start with a warm greeting to regulars.
@@ -59,7 +61,8 @@ Rules:
 - Include a bullet list of the specials (use bullet characters for bullets).
 - End with a simple, friendly call-to-action inviting them to visit this week.
 - Keep the entire email under 200 words.
-- Do NOT include a subject line - just the body text.`,
+- Do NOT include a subject line -- just the body text.
+- Before returning, silently proofread and fix any grammar, spelling, or punctuation errors.`,
         temperature: 0.7,
         maxOutputTokens: 2048,
       })
