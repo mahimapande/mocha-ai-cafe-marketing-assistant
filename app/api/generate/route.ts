@@ -20,11 +20,13 @@ Tone guide (use "${tone}"):
 - professional = clear, informative, straightforward
 
 Rules:
-- ${includeEmojis ? "Include relevant emojis." : "Do NOT include any emojis."}
+- ${includeEmojis ? "Use emojis as part of sentences (after key phrases) or at the end -- spread them naturally, never clumped together in one place. It's okay to use emojis instead of some punctuation as long as the caption still reads clearly." : "Do NOT include any emojis."}
 - Each caption must stay under 150-180 characters so it reads quickly.
 - Write in clear, natural, grammatically correct American English, but use a relaxed Instagram style.
 - Prefer dashes, commas, and line breaks over formal periods so the caption feels conversational.
 - You may use one or two short sentences or phrases, but avoid stiff or overly formal punctuation.
+- You may use line breaks to make the caption feel more natural.
+- Do NOT put a dash or other punctuation directly before the hashtags -- just leave a space before hashtags.
 - Do NOT use flowery or exaggerated adjectives like "flaky," "succulent," "decadent," "heavenly," "irresistible," or similar over-the-top terms. Use plain, natural language.
 - Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
 - End each caption with 2-3 relevant hashtags that feel local and cozy (e.g. #neighborhoodcafe, #slowmorning, #coffeelover, #matchalatte).
