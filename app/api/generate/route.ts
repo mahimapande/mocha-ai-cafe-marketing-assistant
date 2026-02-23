@@ -60,7 +60,9 @@ Rules:
 - Write in clear, natural, grammatically correct American English with proper punctuation and sentence structure.
 - Do NOT use flowery or exaggerated adjectives like "flaky," "succulent," "decadent," "heavenly," "irresistible," or similar over-the-top terms. Use plain, natural language.
 - Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
-- Start with a warm greeting to regulars.
+- Start with a warm but simple greeting like "Hi friends," or "Hi everyone," followed by a comma (NOT a dash or em dash). Start the next sentence on a new line. Example format:
+  "Hi friends,"
+  "This Valentine's Day we're offering..."
 - Summarize the specials/events in 1-2 sentences.
 - Include a bullet list of the specials (use bullet characters for bullets).
 - End with a simple, friendly call-to-action inviting them to visit this week.
