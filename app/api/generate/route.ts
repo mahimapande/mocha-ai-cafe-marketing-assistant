@@ -6,10 +6,7 @@ export async function POST(req: Request) {
 
     const results: { captions?: string[]; email?: string } = {}
 
-    if (channel === "instagram" || channel === "both") {
-      const { text: captionsRaw } = await generateText({
-        model: "openai/gpt-5-mini",
-        prompt: `You are a social-media copywriter for a neighborhood cafe.
+    const instagramPrompt = `You are a social-media copywriter for a neighborhood cafe.
 
 Write 3 short, catchy Instagram captions based ONLY on these specials/events:
 "${specials}"
@@ -23,7 +20,7 @@ Rules:
 - ${includeEmojis ? "Weave emojis into the natural flow of the caption so they feel like part of the sentence, not interruptions. Place them where a pause or emphasis naturally occurs (e.g. 'Matcha lattes are back and we missed them too' not 'Matcha lattes are back and we missed them too'). Never clump multiple emojis together. Keep it to 1-3 emojis per caption." : "Do NOT include any emojis."}
 - Each caption must stay under 150-180 characters so it reads quickly.
 - Write in clear, natural, grammatically correct American English, but use a relaxed Instagram style.
-- Do NOT use em dashes (—). Use commas, colons, or line breaks instead for a relaxed feel.
+- Do NOT use em dashes (--). Use commas, colons, or line breaks instead for a relaxed feel.
 - Do NOT use periods (.) as punctuation. Use commas, colons, line breaks, or emojis to end phrases instead.
 - You may use one or two short sentences or phrases, but avoid stiff or overly formal punctuation.
 - You may use line breaks to make the caption feel more natural.
@@ -32,21 +29,9 @@ Rules:
 - Do NOT invent any specials, events, or menu items. Only reference what the user typed above.
 - End each caption with 2-3 relevant hashtags that feel local and cozy (e.g. #neighborhoodcafe, #slowmorning, #coffeelover, #matchalatte).
 - Number the captions 1., 2., and 3.
-- Before returning, silently proofread and fix any grammar, spelling, or punctuation errors.`,
-        temperature: 0.8,
-        maxOutputTokens: 2048,
-      })
+- Before returning, silently proofread and fix any grammar, spelling, or punctuation errors.`
 
-      results.captions = captionsRaw
-        .split(/(?:\n\s*---\s*\n|\n\s*\d+\.\s+)/)
-        .map((c) => c.replace(/^\d+\.\s*/, "").trim())
-        .filter(Boolean)
-    }
-
-    if (channel === "email" || channel === "both") {
-      const { text: email } = await generateText({
-        model: "openai/gpt-5-mini",
-        prompt: `You are a copywriter for a neighborhood cafe.
+    const emailPrompt = `You are a copywriter for a neighborhood cafe.
 
 Write a short weekly promo email based ONLY on these specials/events:
 "${specials}"
@@ -70,12 +55,30 @@ Rules:
 - End with a simple, friendly call-to-action inviting them to visit this week.
 - Keep the entire email under 200 words.
 - Do NOT include a subject line -- just the body text.
-- Before returning, silently proofread and fix any grammar, spelling, or punctuation errors.`,
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-      })
+- Before returning, silently proofread and fix any grammar, spelling, or punctuation errors.`
 
-      results.email = email.trim()
+    const wantsInstagram = channel === "instagram" || channel === "both"
+    const wantsEmail = channel === "email" || channel === "both"
+
+    // Run both calls in parallel when "both" is selected
+    const [instagramResult, emailResult] = await Promise.all([
+      wantsInstagram
+        ? generateText({ model: "openai/gpt-5-mini", prompt: instagramPrompt, temperature: 0.8, maxOutputTokens: 1024 })
+        : Promise.resolve(null),
+      wantsEmail
+        ? generateText({ model: "openai/gpt-5-mini", prompt: emailPrompt, temperature: 0.7, maxOutputTokens: 1024 })
+        : Promise.resolve(null),
+    ])
+
+    if (instagramResult) {
+      results.captions = instagramResult.text
+        .split(/(?:\n\s*---\s*\n|\n\s*\d+\.\s+)/)
+        .map((c) => c.replace(/^\d+\.\s*/, "").trim())
+        .filter(Boolean)
+    }
+
+    if (emailResult) {
+      results.email = emailResult.text.trim()
     }
 
     return Response.json(results)
