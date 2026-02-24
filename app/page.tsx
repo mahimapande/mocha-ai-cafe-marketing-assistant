@@ -25,13 +25,26 @@ export default function Home() {
     setError(null)
 
     try {
+      console.log("[v0] Fetching /api/promo with:", data)
       const res = await fetch("/api/promo", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
 
-      const json = await res.json()
+      console.log("[v0] Response status:", res.status)
+      const text = await res.text()
+      console.log("[v0] Raw response text:", text)
+
+      let json
+      try {
+        json = JSON.parse(text)
+      } catch {
+        throw new Error("Response was not valid JSON. Server may have timed out.")
+      }
+
+      console.log("[v0] Parsed JSON:", JSON.stringify(json))
+      console.log("[v0] Has captions:", !!json.captions, "Has email:", !!json.email)
 
       if (!res.ok) {
         throw new Error(
@@ -41,6 +54,7 @@ export default function Home() {
 
       setResults(json)
     } catch (err) {
+      console.error("[v0] Client error:", err)
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
       setIsLoading(false)
