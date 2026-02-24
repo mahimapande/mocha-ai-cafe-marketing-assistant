@@ -4,7 +4,6 @@ import { useState } from "react"
 import { Coffee, Check, Copy, Instagram, Mail, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { generateCaptions, generateEmail } from "./actions"
 
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -51,16 +50,36 @@ export default function CafePromoPage() {
     const wantsEmail = channel === "email" || channel === "both"
 
     try {
-      const [captionsResult, emailResult] = await Promise.all([
-        wantsIg ? generateCaptions(specials, tone, includeEmojis) : null,
-        wantsEmail ? generateEmail(specials, tone, includeEmojis) : null,
+      const fetchOpts = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ specials, tone, includeEmojis, channel }),
+      }
+
+      // Fetch captions and email from separate endpoints in parallel
+      const [captionsRes, emailRes] = await Promise.all([
+        wantsIg ? fetch("/api/captions", fetchOpts) : null,
+        wantsEmail ? fetch("/api/email", fetchOpts) : null,
       ])
 
-      setResults({
-        captions: captionsResult ?? undefined,
-        email: emailResult ?? undefined,
-      })
+      const combined: Results = {}
+
+      if (captionsRes) {
+        const cJson = await captionsRes.json()
+        if (captionsRes.ok) combined.captions = cJson.captions
+        else throw new Error(cJson.error || "Failed to generate captions.")
+      }
+
+      if (emailRes) {
+        const eJson = await emailRes.json()
+        if (emailRes.ok) combined.email = eJson.email
+        else throw new Error(eJson.error || "Failed to generate email.")
+      }
+
+      console.log("[v0] FRESH CODE combined results:", combined)
+      setResults(combined)
     } catch (err) {
+      console.error("[v0] FRESH CODE error:", err)
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
       setIsLoading(false)
@@ -173,7 +192,7 @@ export default function CafePromoPage() {
                 </div>
               )}
 
-              {!hasResults && !error && (
+              {!hasResults && !error && !isLoading && (
                 <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center px-6">
                   <div className="rounded-full bg-secondary p-4 mb-4">
                     <Mail className="size-6 text-muted-foreground" />
@@ -181,6 +200,13 @@ export default function CafePromoPage() {
                   <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
                     Fill in your specials and events, pick your settings, and hit Generate to see your promo content here.
                   </p>
+                </div>
+              )}
+
+              {isLoading && !hasResults && (
+                <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center px-6">
+                  <Loader2 className="size-8 animate-spin text-primary mb-4" />
+                  <p className="text-muted-foreground text-sm">Generating your promo content...</p>
                 </div>
               )}
 
