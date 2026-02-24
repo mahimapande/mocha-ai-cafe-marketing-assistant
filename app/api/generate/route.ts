@@ -20,7 +20,7 @@ Tone guide (use "${tone}"):
 - professional = clear, informative, straightforward
 
 Rules:
-- ${includeEmojis ? "Use emojis as part of sentences (after key phrases) or at the end -- spread them naturally, never clumped together in one place. It's okay to use emojis instead of some punctuation as long as the caption still reads clearly." : "Do NOT include any emojis."}
+- ${includeEmojis ? "Weave emojis into the natural flow of the caption so they feel like part of the sentence, not interruptions. Place them where a pause or emphasis naturally occurs (e.g. 'Matcha lattes are back and we missed them too' not 'Matcha lattes are back and we missed them too'). Never clump multiple emojis together. Keep it to 1-3 emojis per caption." : "Do NOT include any emojis."}
 - Each caption must stay under 150-180 characters so it reads quickly.
 - Write in clear, natural, grammatically correct American English, but use a relaxed Instagram style.
 - Do NOT use em dashes (—). Use commas, colons, or line breaks instead for a relaxed feel.
