@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { PromoForm } from "@/components/promo-form"
 import { PromoResults } from "@/components/promo-results"
-import { generatePromo } from "@/app/actions"
 import { Coffee } from "lucide-react"
 
 interface GenerateResult {
@@ -24,15 +23,38 @@ export default function Home() {
   }) {
     setIsLoading(true)
     setError(null)
+    setResults(null)
 
     try {
-      const result = await generatePromo(data)
+      const wantsIg = data.channel === "instagram" || data.channel === "both"
+      const wantsEmail = data.channel === "email" || data.channel === "both"
+      const body = JSON.stringify(data)
+      const headers = { "Content-Type": "application/json" }
 
-      if (result.error) {
-        throw new Error(result.error)
+      const [igRes, emailRes] = await Promise.all([
+        wantsIg
+          ? fetch("/api/captions", { method: "POST", headers, body })
+          : null,
+        wantsEmail
+          ? fetch("/api/email", { method: "POST", headers, body })
+          : null,
+      ])
+
+      const combined: GenerateResult = {}
+
+      if (igRes) {
+        const igJson = await igRes.json()
+        if (!igRes.ok) throw new Error(igJson.error || "Failed to generate captions.")
+        combined.captions = igJson.captions
       }
 
-      setResults({ captions: result.captions, email: result.email })
+      if (emailRes) {
+        const emailJson = await emailRes.json()
+        if (!emailRes.ok) throw new Error(emailJson.error || "Failed to generate email.")
+        combined.email = emailJson.email
+      }
+
+      setResults(combined)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
@@ -66,8 +88,7 @@ export default function Home() {
                 {"What's happening this week?"}
               </h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Tell us about your specials, events, or anything you want to
-                promote.
+                Tell us about your specials, events, or anything you want to promote.
               </p>
               <PromoForm onGenerate={handleGenerate} isLoading={isLoading} />
             </div>
@@ -80,10 +101,7 @@ export default function Home() {
                   <p className="text-sm text-destructive">{error}</p>
                 </div>
               )}
-              <PromoResults
-                captions={results?.captions}
-                email={results?.email}
-              />
+              <PromoResults captions={results?.captions} email={results?.email} />
             </div>
           </div>
         </div>
