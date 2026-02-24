@@ -4,35 +4,19 @@ import { useState } from "react"
 import { Coffee, Check, Copy, Instagram, Mail, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-
-/* ── Types ──────────────────────────────────────────── */
-
-interface PromoData {
-  specials: string
-  tone: string
-  includeEmojis: boolean
-  channel: string
-}
-
-interface PromoResult {
-  captions?: string[]
-  email?: string
-}
-
-/* ── Copy Button ────────────────────────────────────── */
+import { generateCaptions, generateEmail } from "./actions"
 
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
-  async function copy() {
-    await navigator.clipboard.writeText(text)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
   return (
     <Button
       variant="ghost"
       size="sm"
-      onClick={copy}
+      onClick={async () => {
+        await navigator.clipboard.writeText(text)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }}
       className="h-8 px-2 text-muted-foreground hover:text-foreground cursor-pointer"
     >
       {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
@@ -41,7 +25,10 @@ function CopyBtn({ text }: { text: string }) {
   )
 }
 
-/* ── Main Page ──────────────────────────────────────── */
+interface Results {
+  captions?: string[]
+  email?: string
+}
 
 export default function CafePromoPage() {
   const [specials, setSpecials] = useState("")
@@ -49,7 +36,7 @@ export default function CafePromoPage() {
   const [includeEmojis, setIncludeEmojis] = useState(true)
   const [channel, setChannel] = useState("both")
   const [isLoading, setIsLoading] = useState(false)
-  const [results, setResults] = useState<PromoResult | null>(null)
+  const [results, setResults] = useState<Results | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
@@ -60,33 +47,19 @@ export default function CafePromoPage() {
     setError(null)
     setResults(null)
 
-    const data: PromoData = { specials, tone, includeEmojis, channel }
     const wantsIg = channel === "instagram" || channel === "both"
     const wantsEmail = channel === "email" || channel === "both"
-    const body = JSON.stringify(data)
-    const headers = { "Content-Type": "application/json" }
 
     try {
-      const [igRes, emailRes] = await Promise.all([
-        wantsIg ? fetch("/api/captions", { method: "POST", headers, body }) : null,
-        wantsEmail ? fetch("/api/email", { method: "POST", headers, body }) : null,
+      const [captionsResult, emailResult] = await Promise.all([
+        wantsIg ? generateCaptions(specials, tone, includeEmojis) : null,
+        wantsEmail ? generateEmail(specials, tone, includeEmojis) : null,
       ])
 
-      const combined: PromoResult = {}
-
-      if (igRes) {
-        const igJson = await igRes.json()
-        if (!igRes.ok) throw new Error(igJson.error || "Failed to generate captions.")
-        combined.captions = igJson.captions
-      }
-
-      if (emailRes) {
-        const emailJson = await emailRes.json()
-        if (!emailRes.ok) throw new Error(emailJson.error || "Failed to generate email.")
-        combined.email = emailJson.email
-      }
-
-      setResults(combined)
+      setResults({
+        captions: captionsResult ?? undefined,
+        email: emailResult ?? undefined,
+      })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
@@ -101,7 +74,6 @@ export default function CafePromoPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b border-border bg-card/50">
         <div className="mx-auto flex max-w-6xl items-center gap-3 px-6 py-5">
           <div className="flex items-center justify-center rounded-full bg-primary p-2">
@@ -120,8 +92,6 @@ export default function CafePromoPage() {
 
       <main className="mx-auto max-w-6xl px-6 py-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
-
-          {/* Left: Form */}
           <div className="lg:col-span-2">
             <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
               <h2 className="font-serif text-lg font-semibold text-foreground mb-1">
@@ -195,7 +165,6 @@ export default function CafePromoPage() {
             </div>
           </div>
 
-          {/* Right: Results */}
           <div className="lg:col-span-3">
             <div className="rounded-xl border border-border bg-card/50 p-6 min-h-[400px]">
               {error && (
@@ -210,7 +179,7 @@ export default function CafePromoPage() {
                     <Mail className="size-6 text-muted-foreground" />
                   </div>
                   <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-                    {"Fill in your specials and events, pick your settings, and hit Generate to see your promo content here."}
+                    Fill in your specials and events, pick your settings, and hit Generate to see your promo content here.
                   </p>
                 </div>
               )}
@@ -259,7 +228,6 @@ export default function CafePromoPage() {
               )}
             </div>
           </div>
-
         </div>
       </main>
     </div>
