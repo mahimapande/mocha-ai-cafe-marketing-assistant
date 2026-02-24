@@ -24,6 +24,7 @@ Rules:
 - Each caption must stay under 150-180 characters so it reads quickly.
 - Write in clear, natural, grammatically correct American English, but use a relaxed Instagram style.
 - Do NOT use em dashes (—). Use commas, colons, or line breaks instead for a relaxed feel.
+- Do NOT use periods (.) as punctuation. Use commas, colons, line breaks, or emojis to end phrases instead.
 - You may use one or two short sentences or phrases, but avoid stiff or overly formal punctuation.
 - You may use line breaks to make the caption feel more natural.
 - Do NOT put a dash or other punctuation directly before the hashtags -- just leave a space before hashtags.
