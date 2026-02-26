@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       : "Do NOT include any emojis."
 
     const { text } = await generateText({
-      model: "openai/gpt-5-mini",
+      model: "openai/gpt-4o-mini",
       prompt: `You are a social-media copywriter for a neighborhood cafe.
 
 Write 3 short, catchy Instagram captions based ONLY on these specials/events:

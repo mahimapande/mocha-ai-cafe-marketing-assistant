@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       : "Do NOT include any emojis."
 
     const { text } = await generateText({
-      model: "openai/gpt-5-mini",
+      model: "openai/gpt-4o-mini",
       prompt: `You are a copywriter for a neighborhood cafe.
 
 Write a short weekly promo email based ONLY on these specials/events:
