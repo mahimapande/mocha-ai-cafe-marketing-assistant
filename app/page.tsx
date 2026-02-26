@@ -76,10 +76,8 @@ export default function CafePromoPage() {
         else throw new Error(eJson.error || "Failed to generate email.")
       }
 
-      console.log("[v0] FRESH CODE combined results:", combined)
       setResults(combined)
     } catch (err) {
-      console.error("[v0] FRESH CODE error:", err)
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
       setIsLoading(false)
