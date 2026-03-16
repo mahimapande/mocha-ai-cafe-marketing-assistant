@@ -39,6 +39,7 @@ Rules:
 - Bullet list of specials.
 - End with a friendly call-to-action.
 - Under 200 words. No subject line.
+- Do NOT use these characters: # * ^ @
 - Proofread before returning.`,
       temperature: 0.7,
       maxOutputTokens: 512,
