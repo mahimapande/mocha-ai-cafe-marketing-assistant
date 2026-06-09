@@ -1,0 +1,111 @@
+# Mocha Case Study
+
+## Overview
+
+### Problem
+
+A local café manager spent significant time creating weekly Instagram posts and promo emails, often under time pressure while also running day-to-day operations. Writing from scratch created friction, inconsistency, and blank-page anxiety, even when the business already knew what it wanted to promote.
+
+### Solution
+
+Mocha is an AI-powered café promo assistant built in v0 with GPT-4o-mini. It takes a short description of weekly specials or events, a tone setting, and a channel selection, then generates three Instagram captions and a newsletter-style email draft.
+
+## User Research
+
+### Who was interviewed
+
+The project was informed by a semi-structured interview with one local café manager responsible for day-to-day operations, Instagram posts, and occasional email promotions.
+
+### Research goals
+
+The research focused on understanding:
+
+- How the café currently planned and created weekly content
+- Where the process felt slow or frustrating
+- What “good enough” on-brand content sounded like
+- What would make an AI-generated draft feel usable and trustworthy
+
+### Research approach
+
+A 30–45 minute interview was conducted at the café. The conversation walked through how the manager came up with ideas, how long content creation usually took, and what they liked or disliked about their current process.
+
+### Key findings
+
+- Creating a set of weekly posts and a promo email could take roughly 15–20 minutes
+- The hardest part was getting started from a blank page
+- Editing existing copy felt easier than writing from scratch
+- Tone mattered: the manager wanted content to feel cozy, personal, and not like “corporate marketing”
+- Trust mattered: captions and emails needed to sound realistic enough to post with minimal cleanup
+
+A representative sentiment from the research was that figuring out what to post and how to post it, while also keeping up with the business, was one of the hardest parts of the workflow.
+
+## Product Design
+
+### What Mocha does
+
+#### Inputs
+
+- Weekly specials or events
+- Tone selection, such as cozy
+- Channel selection, such as Instagram, email, or both
+- Emoji preference
+
+#### Outputs
+
+- Three Instagram captions
+- One newsletter-style promo email
+
+### AI workflow
+
+Mocha was built in v0 with GPT-4o-mini as the content-generation engine. Prompt iteration focused on controlling tone, length, emojis, hashtags, and output structure.
+
+### Guardrails and iteration
+
+Several prompt and output refinements were added to improve quality:
+
+- Guardrails to reduce invented offers or unsupported claims
+- Caption tuning to make outputs feel less formal and more natural for a café audience
+- Email prompt refinement for grammar, warmth, and on-brand wording
+- Iteration on structure so the output felt easier to scan and reuse
+
+## Prototype
+
+### Initial form
+
+The prototype collected a short description of the café’s specials or events, along with tone, channel, and emoji settings.
+
+### Generated output
+
+After submission, Mocha returned three Instagram caption options and one email draft based on the selected context.
+
+## User Test and Impact
+
+### User test setup
+
+The café manager tested Mocha using a sample weekly promotion that included Valentine’s Day messaging, a 50% latte discount, and live jazz from 10am–1pm.
+
+### Results
+
+- Mocha reduced the time to draft a week’s content to about 3–5 minutes
+- This compared favorably with the previous 15–20 minute manual process
+- The generated output helped the user get started faster and reduced blank-page anxiety
+
+### User feedback
+
+The café manager said Mocha “made it much easier to get started” and “sounded like something I’d actually post.”
+
+That feedback suggested the prototype succeeded not just in speed, but also in perceived usefulness and voice alignment.
+
+## Learnings
+
+### AI as a builder tool
+
+The project shifted the use of AI from a personal productivity shortcut to a core product building block. It showed how quickly prompts, UI, and feedback loops could be wired together into a usable prototype.
+
+### Iterative user testing over fixed assumptions
+
+Multiple rounds of feedback reinforced the importance of testing early rather than getting attached to initial ideas. The most important improvements came from noticing where captions and emails felt off in tone, length, and trustworthiness.
+
+### Product direction for Mocha 2.0
+
+A future version could go beyond content generation and help café owners decide how to post a promotion. For example, it could recommend whether a special is better suited for a feed post, story, reel, or email, and suggest timing or reusable templates based on the context provided.
