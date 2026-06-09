@@ -74,9 +74,14 @@ Several prompt and output refinements were added to improve quality:
 
 The prototype collected a short description of the café’s specials or events, along with tone, channel, and emoji settings.
 
+![Mocha initial form](../screenshots/mocha-form.png)
+
 ### Generated output
 
 After submission, Mocha returned three Instagram caption options and one email draft based on the selected context.
+
+![Mocha generated output, top section](../screenshots/mocha-output-part-1.png)
+![Mocha generated output, lower section](../screenshots/mocha-output-part-2.png)
 
 ## User Test and Impact
 
