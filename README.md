@@ -75,10 +75,12 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 ## Screenshots
 
-```md
-![Mocha form](./screenshots/mocha-form.png)
-![Mocha generated output](./screenshots/mocha-output.png)
-```
+### Input form
+![Mocha input form](./screenshots/mocha-form.png)
+
+### Generated output
+![Mocha generated output, top section](./screenshots/mocha-output-part-1.png)
+![Mocha generated output, lower section](./screenshots/mocha-output-part-2.png)
 
 ## Future Improvements
 
